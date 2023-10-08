@@ -5,13 +5,13 @@ public class Movement : MonoBehaviour
 {
     private Rigidbody _rb;
     private float _currentVelocity;
-    
-    
+
+
+    [SerializeField] private Transform camera;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float smoothTime;
-    [SerializeField] private GameObject playerGRFX;
-    
-    
+
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -30,9 +30,10 @@ public class Movement : MonoBehaviour
     private void Walk(Vector3 dir)
     {
         float targetAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
-        float angle = Mathf.SmoothDampAngle(playerGRFX.transform.eulerAngles.y, targetAngle, ref _currentVelocity , smoothTime);
-        playerGRFX.transform.rotation = Quaternion.Euler(0f, angle, 0f);
-        
-        _rb.MovePosition(transform.position + dir * Time.deltaTime * moveSpeed);
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _currentVelocity , smoothTime);
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+        Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+        _rb.MovePosition((transform.position + dir).normalized * Time.deltaTime * moveSpeed);
     }
 }

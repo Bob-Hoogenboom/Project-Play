@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -10,18 +11,41 @@ public class PickUpOBJ : MonoBehaviour
 {
     public float objectGetValue;
     public Sprite objectImage;
-    public Vector3 objectSize = new Vector3(1f,1f,1f);
 
-    private Vector3 _objectCenter;
+    [SerializeField] private Material glowMaterial;
+    [SerializeField] private Material originalMaterial;
 
-    private void OnDrawGizmos()
+    private Material _cachedGlowMaterials;
+    private bool _isGlowing = false;
+
+    private void Awake()
     {
-        var pos = transform.position;
-        var centerY = pos.y + (objectSize.y / 2);
-
-        _objectCenter = new Vector3(pos.x, centerY, pos.z);
-        
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireCube(_objectCenter, objectSize);
+        PrepareMaterials();
     }
+
+    private void PrepareMaterials()
+    {
+        
+    }
+
+    private void HighLight()
+    {
+        if (_isGlowing)
+        {
+            gameObject.GetComponentInChildren<Renderer>().material = glowMaterial;
+        }
+        else
+        {
+            gameObject.GetComponentInChildren<Renderer>().material = originalMaterial;
+        }
+
+        _isGlowing = !_isGlowing;
+    }
+    
+    public void ToggleHighligh(bool state)
+    {
+        if (_isGlowing == state) return;
+        _isGlowing = !state;
+        HighLight();
+    } 
 }
