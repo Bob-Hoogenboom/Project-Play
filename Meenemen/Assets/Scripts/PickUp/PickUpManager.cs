@@ -1,14 +1,14 @@
-using System;
 using UnityEngine;
 
 public class PickUpManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _currentOBJ;
     private RaycastHit _hit;
-    [SerializeField] private bool _hitDetect;
     
+    [SerializeField] private GameObject _currentOBJ;
     [SerializeField] private LayerMask pickUp;
-    [SerializeField] private float rayDistance;
+    
+    [SerializeField] private float rayDistance = 2f;
+    [SerializeField] private bool _hitDetect;
 
     private void FixedUpdate()
     {
@@ -30,7 +30,6 @@ public class PickUpManager : MonoBehaviour
             _currentOBJ.GetComponent<PickUpOBJ>()?.ToggleHighligh(false);
             _currentOBJ = null;
         }
-        
     }
     
     private void GetPickUp()
