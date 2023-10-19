@@ -14,29 +14,18 @@ public class PickUpOBJ : MonoBehaviour
 
     [SerializeField] private Material glowMaterial;
     [SerializeField] private Material originalMaterial;
-
-    private Material _cachedGlowMaterials;
-    private bool _isGlowing = false;
-
-    private void Awake()
-    {
-        PrepareMaterials();
-    }
-
-    private void PrepareMaterials()
-    {
-        
-    }
+    
+    private bool _isGlowing;
 
     private void HighLight()
     {
         if (_isGlowing)
         {
-            gameObject.GetComponentInChildren<Renderer>().material = glowMaterial;
+            gameObject.GetComponentInChildren<Renderer>().material = originalMaterial;
         }
         else
         {
-            gameObject.GetComponentInChildren<Renderer>().material = originalMaterial;
+            gameObject.GetComponentInChildren<Renderer>().material = glowMaterial;
         }
 
         _isGlowing = !_isGlowing;
@@ -47,5 +36,5 @@ public class PickUpOBJ : MonoBehaviour
         if (_isGlowing == state) return;
         _isGlowing = !state;
         HighLight();
-    } 
+    }
 }

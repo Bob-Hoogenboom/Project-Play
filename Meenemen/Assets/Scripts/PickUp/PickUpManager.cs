@@ -1,15 +1,33 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PickUpManager : MonoBehaviour
 {
     private RaycastHit _hit;
+    [SerializeField] private GameObject inventoryOBJ;
     
     [SerializeField] private GameObject _currentOBJ;
+    [SerializeField] private GameObject canvasMsg;
     [SerializeField] private LayerMask pickUp;
     
     [SerializeField] private float rayDistance = 2f;
     [SerializeField] private bool _hitDetect;
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (_currentOBJ != null)
+            {
+                PickUpObject();
+            }
+            else if(inventoryOBJ != null)
+            {
+                PlaceObject();
+            }
+        }
+    }
+    
     private void FixedUpdate()
     {
         CheckPickUp();
@@ -36,6 +54,26 @@ public class PickUpManager : MonoBehaviour
     {
         _currentOBJ = _hit.collider.gameObject;
         _currentOBJ.GetComponent<PickUpOBJ>()?.ToggleHighligh(true);
+    }
+
+    private void PickUpObject()
+    {
+        if (_currentOBJ != null)
+        {
+            Debug.Log("PickedUp");
+            inventoryOBJ = _currentOBJ;
+            _currentOBJ.SetActive(false);
+            canvasMsg.SetActive(false);
+        }
+    }
+
+    private void PlaceObject()
+    {
+        Debug.Log("PutDown");
+        inventoryOBJ.transform.position = transform.position + transform.forward * rayDistance;
+        canvasMsg.SetActive(true);
+        inventoryOBJ.SetActive(true);
+        inventoryOBJ = null;
     }
 
     private void OnDrawGizmos()
