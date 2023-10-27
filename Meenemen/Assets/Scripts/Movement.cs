@@ -5,6 +5,7 @@ public class Movement : MonoBehaviour
     private CharacterController _charCon;
     private Transform _cam;
     private float _turnSmoothVelocity;
+    private Vector3 _gravity;
     
     [SerializeField] private float turnSmoothTime = 0.1f;
     [SerializeField] private float speed = 5f;
@@ -16,6 +17,12 @@ public class Movement : MonoBehaviour
     }
 
     private void Update()
+    {
+        Move();
+        ApplyGravity();
+    }
+
+    private void Move()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
@@ -30,4 +37,16 @@ public class Movement : MonoBehaviour
         Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         _charCon.Move(moveDir * speed * Time.deltaTime);
     }
+
+    private void ApplyGravity()
+    {
+        _gravity += Physics.gravity * Time.deltaTime;
+        _charCon.Move(_gravity);
+        if (IsGrounded())
+        {
+            _gravity.y = 0;
+        }
+    }
+
+    private bool IsGrounded() => _charCon.isGrounded;
 }
