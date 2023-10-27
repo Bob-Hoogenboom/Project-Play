@@ -17,13 +17,13 @@ public class PickUpManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (_currentOBJ != null)
-            {
-                PickUpObject();
-            }
-            else if(inventoryOBJ != null)
+            if (inventoryOBJ != null)
             {
                 PlaceObject();
+            }
+            else if(_currentOBJ != null)
+            {
+                PickUpObject();
             }
         }
     }
